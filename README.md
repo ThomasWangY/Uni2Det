@@ -2,7 +2,7 @@
 
 [Yubin Wang](https://thomaswangy.github.io/)$^1$\*, [Zhikang Zou](https://bigteacher-777.github.io/)$^2$\*, [Xiaoqing Ye](https://shuluoshu.github.io/)$^2$, [Xiao Tan](https://scholar.google.com/citations?user=R1rVRUkAAAAJ)$^2$, [Errui Ding](https://scholar.google.com/citations?user=1wzEtxcAAAAJ)$^2$, [Cairong Zhao](https://vill-lab.github.io/)$^1$
 
-$^1$Tongji University, $^2$Baidu Inc.
+$^1$Tongji University, $^2$Baidu Inc.  *Equal Contribution
 
 Official implementation of the paper "[Uni2Det: Unified and Universal Framework for Prompt-Guided Multi-dataset 3D Detection](https://arxiv.org/abs/2409.20558)".
 
@@ -11,7 +11,7 @@ Official implementation of the paper "[Uni2Det: Unified and Universal Framework 
 
 ## 📢 News
 
-* **(Feb 4, 2025)**
+* **(Feb 13, 2025)**
   - Training and evaluation codes for Uni$^2$Det are released 🔓
 * **(Jan 23, 2025)**
   * Paper accepted at ICLR 2025 :tada: 
