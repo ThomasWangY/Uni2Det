@@ -309,8 +309,7 @@ class BaseBEVBackbone_MASK(nn.Module):
                 raise NotImplementedError
 
         for i in range(len(self.blocks)):
-            x = torch.cat((x, mask), dim=1) # TODO wyb
-            # x = checkpoint_sequential(self.blocks[i], 2, x)
+            x = torch.cat((x, mask), dim=1)
             x = self.blocks[i](x)
 
             stride = int(spatial_features.shape[2] / x.shape[2])

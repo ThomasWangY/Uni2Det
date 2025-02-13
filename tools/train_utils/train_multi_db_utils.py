@@ -171,7 +171,6 @@ def train_model(model, optimizer, train_loader_1, train_loader_2, model_func, lr
                 train_loader_2.dataset.data_augmentor.re_prepare(
                     augmentor_configs=cfg.DATA_CONFIG_SRC_2.PROG_AUG.D_CFG if cfg.DATA_CONFIG_SRC_2.PROG_AUG.get('D_CFG', None) else None)
 
-            # TODO wyb
             hook_config = cfg.get('HOOK', None)
             augment_disable_flag = False
             augment_disable_flag = disable_augmentation_hook(hook_config, dataloader_iter_1, dataloader_iter_2, total_epochs, cur_epoch, cfg, augment_disable_flag)    
@@ -240,7 +239,6 @@ def save_checkpoint(state, filename='checkpoint'):
     filename = '{}.pth'.format(filename)
     torch.save(state, filename)
 
-# TODO wyb
 def disable_augmentation_hook(hook_config, dataloader_1, dataloader_2, total_epochs, cur_epoch, cfg, flag):
     """
     This hook turns off the data augmentation during training.

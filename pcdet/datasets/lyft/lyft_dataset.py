@@ -128,7 +128,6 @@ class LyftDataset(DatasetTemplate):
             'frame_id': Path(info['lidar_path']).stem,
             'metadata': {'token': info['token']}
         }
-        # TODO: map class names (if v1, comment out this snippet)
         cls_map = {'emergency_vehicle':'car', 'bus':'car', 'truck':'car', 'other_vehicle':'car', 'motorcycle':'bicycle'}
         info['gt_names'] = np.array([cls_map.get(name, name) for name in info['gt_names']])
         if 'gt_boxes' in info:
@@ -206,25 +205,11 @@ class LyftDataset(DatasetTemplate):
         from ..kitti.kitti_object_eval_python import eval as kitti_eval
         from ..kitti import kitti_utils
 
-        # TODO: map_name_to_kitti (if v2, comment out this snippet)
-        # map_name_to_kitti = {
-        #     'car': 'Car',
-        #     'pedestrian': 'Pedestrian',
-        #     'truck': 'Truck',
-        #     'bicycle': 'Cyclist',
-        #     'motorcycle': 'Cyclist'
-        # }
         def transform_to_kitti_format(annos, info_with_fakelidar=False, is_gt=False):
             for anno in annos:
                 if 'name' not in anno:
                     anno['name'] = anno['gt_names']
                     anno.pop('gt_names')
-                # TODO: map_name_to_kitti (if v2, comment out this snippet)
-                # for k in range(anno['name'].shape[0]):
-                #     if anno['name'][k] in map_name_to_kitti:
-                #         anno['name'][k] = map_name_to_kitti[anno['name'][k]]
-                #     else:
-                #         anno['name'][k] = 'Person_sitting'
 
                 if 'boxes_lidar' in anno:
                     gt_boxes_lidar = anno['boxes_lidar'].copy()
@@ -287,8 +272,6 @@ class LyftDataset(DatasetTemplate):
             is_gt=True
         )
 
-        # TODO: map_name_to_kitti (if v1, comment out second snippet; if v2, comment out first snippet)
-        # kitti_class_names = [map_name_to_kitti[x] for x in class_names]
         kitti_class_names = class_names
         
         ap_result_str, ap_dict = kitti_eval.get_official_eval_result(
@@ -300,7 +283,7 @@ class LyftDataset(DatasetTemplate):
         if kwargs['eval_metric'] == 'kitti':
             eval_det_annos = copy.deepcopy(det_annos)
             eval_gt_annos = copy.deepcopy(self.infos)
-            # TODO: map class names (if v1, comment out this snippet)
+
             class_names = ['car', 'pedestrian', 'bicycle']
             cls_map = {'emergency_vehicle':'car', 'bus':'car', 'truck':'car', 'other_vehicle':'car', 'motorcycle':'bicycle'}
             for anno in eval_gt_annos:

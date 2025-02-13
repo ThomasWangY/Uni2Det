@@ -41,8 +41,7 @@ class NuScenesDataset(DatasetTemplate):
 
         for info_path in self.dataset_cfg.INFO_PATH[mode]:
             if self.oss_path is None:
-                info_path = Path('/root/paddlejob/workspace/env_run/wyb/3DTrans/data/v1.0-trainval') / info_path # TODO wyb
-                # info_path = self.root_path / info_path
+                info_path = self.root_path / info_path
                 if not info_path.exists():
                     continue
                 with open(info_path, 'rb') as f:
@@ -101,8 +100,7 @@ class NuScenesDataset(DatasetTemplate):
             return points[mask]
 
         if self.oss_path is None:
-            lidar_path = Path('/root/paddlejob/workspace/env_run/wyb/3DTrans/data/nuscenes') / sweep_info['lidar_path'] # TODO wyb
-            # lidar_path = self.root_path / sweep_info['lidar_path']
+            lidar_path = self.root_path / sweep_info['lidar_path']
             points_sweep = np.fromfile(str(lidar_path), dtype=np.float32, count=-1).reshape([-1, 5])[:, :4]
         else:
             lidar_path = os.path.join(self.oss_path, sweep_info['lidar_path'])
@@ -123,8 +121,7 @@ class NuScenesDataset(DatasetTemplate):
         info = self.infos[index]
 
         if self.oss_path is None:
-            lidar_path = Path('/root/paddlejob/workspace/env_run/wyb/3DTrans/data/nuscenes') / info['lidar_path'] # TODO wyb
-            # lidar_path = self.root_path / info['lidar_path']
+            lidar_path = self.root_path / info['lidar_path']
             points = np.fromfile(str(lidar_path), dtype=np.float32, count=-1).reshape([-1, 5])[:, :4]
         else:
             lidar_path = os.path.join(self.oss_path, info['lidar_path'])
@@ -175,10 +172,6 @@ class NuScenesDataset(DatasetTemplate):
                 mask = (info['num_lidar_pts'] > self.dataset_cfg.FILTER_MIN_POINTS_IN_GT - 1)
             else:
                 mask = None
-
-            # TODO: map class names (if v1, comment out this snippet)
-            # cls_map = {'construction_vehicle':'car', 'bus':'car', 'truck':'car', 'trailer':'car', 'motorcycle':'bicycle'} # , 'traffic_cone':'others', 'barrier':'others'
-            # info['gt_names'] = np.array([cls_map.get(name, name) for name in info['gt_names']])
 
             input_dict.update({
                 'gt_names': info['gt_names'] if mask is None else info['gt_names'][mask],
@@ -275,7 +268,6 @@ class NuScenesDataset(DatasetTemplate):
     def kitti_eval(self, eval_det_annos, eval_gt_annos, class_names):
         from ..kitti.kitti_object_eval_python import eval as kitti_eval
 
-        # TODO: map name to kitti (if v2, comment out this snippet)
         map_name_to_kitti = {
             'car': 'Car',
             'pedestrian': 'Pedestrian',
@@ -289,7 +281,6 @@ class NuScenesDataset(DatasetTemplate):
                     anno['name'] = anno['gt_names']
                     anno.pop('gt_names')
 
-                # TODO: map name to kitti (if v2, comment out this snippet)
                 for k in range(anno['name'].shape[0]):
                     if anno['name'][k] in map_name_to_kitti:
                         anno['name'][k] = map_name_to_kitti[anno['name'][k]]
@@ -335,8 +326,6 @@ class NuScenesDataset(DatasetTemplate):
         transform_to_kitti_format(eval_det_annos)
         transform_to_kitti_format(eval_gt_annos, info_with_fakelidar=False, is_gt=True)
 
-        # TODO: map name to kitti (if v2, comment out this snippet)
-        # kitti_class_names = class_names
         kitti_class_names = []
         for x in class_names:
             if x in map_name_to_kitti:
@@ -409,11 +398,6 @@ class NuScenesDataset(DatasetTemplate):
         if kwargs['eval_metric'] == 'kitti':
             eval_det_annos = copy.deepcopy(det_annos)
             eval_gt_annos = copy.deepcopy(self.infos)
-            # TODO: map name to kitti (if v1, comment out this snippet)
-            # class_names = ['car', 'pedestrian', 'bicycle']
-            # cls_map = {'construction_vehicle':'car', 'bus':'car', 'truck':'car', 'trailer':'car', 'motorcycle':'bicycle'}
-            # for anno in eval_gt_annos:
-            #     anno['gt_names'] = np.array([cls_map.get(name, name) for name in anno['gt_names']])
             return self.kitti_eval(eval_det_annos, eval_gt_annos, class_names)
         elif kwargs['eval_metric'] == 'nuscenes':
             return self.nuscene_eval(det_annos, class_names, **kwargs)
@@ -423,10 +407,8 @@ class NuScenesDataset(DatasetTemplate):
     def create_groundtruth_database(self, used_classes=None, max_sweeps=10):
         import torch
 
-        database_save_path = Path('/root/paddlejob/workspace/env_run/wyb/3DTrans/data/v1.0-trainval') / f'gt_database_{max_sweeps}sweeps_withvelo_10' # TODO wyb
-        db_info_save_path = Path('/root/paddlejob/workspace/env_run/wyb/3DTrans/data/v1.0-trainval') / f'nuscenes_dbinfos_{max_sweeps}sweeps_withvelo_10.pkl' # TODO wyb
-        # database_save_path = self.root_path / f'gt_database_{max_sweeps}sweeps_withvelo'
-        # db_info_save_path = self.root_path / f'nuscenes_dbinfos_{max_sweeps}sweeps_withvelo.pkl'
+        database_save_path = self.root_path / f'gt_database_{max_sweeps}sweeps_withvelo'
+        db_info_save_path = self.root_path / f'nuscenes_dbinfos_{max_sweeps}sweeps_withvelo.pkl'
 
         database_save_path.mkdir(parents=True, exist_ok=True)
         all_db_infos = {}
@@ -453,8 +435,7 @@ class NuScenesDataset(DatasetTemplate):
                     gt_points.tofile(f)
 
                 if (used_classes is None) or gt_names[i] in used_classes:
-                    db_path = Path('gt_database_10sweeps_withvelo') / filename  # gt_database/xxxxx.bin # TODO wyb
-                    # db_path = str(filepath.relative_to(self.root_path))
+                    db_path = str(filepath.relative_to(self.root_path))
                     db_info = {'name': gt_names[i], 'path': db_path, 'image_idx': sample_idx, 'gt_idx': i,
                                'box3d_lidar': gt_boxes[i], 'num_points_in_gt': gt_points.shape[0]}
                     if gt_names[i] in all_db_infos:
@@ -472,7 +453,7 @@ def create_nuscenes_info(version, data_path, save_path, max_sweeps=10):
     from nuscenes.nuscenes import NuScenes
     from nuscenes.utils import splits
     from . import nuscenes_utils
-    # data_path = data_path / version # TODO wyb
+    data_path = data_path / version
     save_path = save_path / version
 
     assert version in ['v1.0-trainval', 'v1.0-test', 'v1.0-mini']
@@ -508,7 +489,7 @@ def create_nuscenes_info(version, data_path, save_path, max_sweeps=10):
             pickle.dump(train_nusc_infos, f)
     else:
         print('train sample: %d, val sample: %d' % (len(train_nusc_infos), len(val_nusc_infos)))
-        with open(save_path / f'nuscenes_infos_{max_sweeps}sweeps_train.pkl', 'wb') as f: # TODO wyb
+        with open(save_path / f'nuscenes_infos_{max_sweeps}sweeps_train.pkl', 'wb') as f:
             pickle.dump(train_nusc_infos, f)
         with open(save_path / f'nuscenes_infos_{max_sweeps}sweeps_val.pkl', 'wb') as f:
             pickle.dump(val_nusc_infos, f)
@@ -533,8 +514,7 @@ if __name__ == '__main__':
         create_nuscenes_info(
             version=dataset_cfg.VERSION,
             data_path=ROOT_DIR / 'data' / 'nuscenes',
-            save_path=ROOT_DIR / 'data', # TODO wyb
-            # save_path=ROOT_DIR / 'data' / 'nuscenes',
+            save_path=ROOT_DIR / 'data' / 'nuscenes',
             max_sweeps=dataset_cfg.MAX_SWEEPS,
         )
 

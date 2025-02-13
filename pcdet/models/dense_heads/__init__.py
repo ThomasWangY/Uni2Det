@@ -6,7 +6,7 @@ from .anchor_head_template import AnchorHeadTemplate
 from .point_head_box import PointHeadBox
 from .point_head_simple import PointHeadSimple
 from .point_intra_part_head import PointIntraPartOffsetHead
-from .center_head import CenterHead, CenterHead_SE
+from .center_head import CenterHead
 from .center_head_semi import CenterHeadSemi
 from .center_head import ActiveCenterHead
 from .IASSD_head import IASSD_Head
@@ -24,7 +24,6 @@ __all__ = {
     'PointHeadBox': PointHeadBox,
     'AnchorHeadMulti': AnchorHeadMulti,
     'CenterHead': CenterHead,
-    'CenterHead_SE': CenterHead_SE,
     'CenterHeadSemi': CenterHeadSemi,
     'ActiveCenterHead': ActiveCenterHead,
     'IASSD_Head': IASSD_Head,

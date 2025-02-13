@@ -418,11 +418,6 @@ class KittiDataset(DatasetTemplate):
 
         eval_det_annos = copy.deepcopy(det_annos)
         eval_gt_annos = [copy.deepcopy(info['annos']) for info in self.kitti_infos]
-        # TODO: map class names (if v1, comment out this snippet)
-        # class_names = ['car', 'pedestrian', 'bicycle']
-        # cls_map = {'Car':'car', 'Cyclist':'bicycle', 'Pedestrian':'pedestrian'}
-        # for anno in eval_gt_annos:
-        #     anno['name'] = np.array([cls_map.get(name, name) for name in anno['name']])
         ap_result_str, ap_dict = kitti_eval.get_official_eval_result(eval_gt_annos, eval_det_annos, class_names)
 
         return ap_result_str, ap_dict

@@ -703,7 +703,7 @@ def merge_two_batch_dict(batch_dict_1, batch_dict_2):
                 
                 tar_list_merge = []
                 # TODO: adjust feature dimension
-                val = np.concatenate((val[...,:7], val[...,-1:]), axis=-1) # TODO wyb
+                val = np.concatenate((val[...,:7], val[...,-1:]), axis=-1)
                 tar_list_merge = [val, batch_gt_boxes3d]
                 batch_merge_dict[key] = np.concatenate(tar_list_merge, axis=0)
             else:
@@ -714,7 +714,7 @@ def merge_two_batch_dict(batch_dict_1, batch_dict_2):
                     batch_gt_boxes3d[k, :val[k].__len__(), :] = val[k]
 
                 tar_list_merge = []
-                batch_gt_boxes3d = np.concatenate((batch_gt_boxes3d[...,:7], batch_gt_boxes3d[...,-1:]), axis=-1) # TODO wyb
+                batch_gt_boxes3d = np.concatenate((batch_gt_boxes3d[...,:7], batch_gt_boxes3d[...,-1:]), axis=-1)
                 tar_list_merge = [batch_gt_boxes3d, val_2]
                 batch_merge_dict[key] = np.concatenate(tar_list_merge, axis=0)
 

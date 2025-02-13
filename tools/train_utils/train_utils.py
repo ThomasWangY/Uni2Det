@@ -172,7 +172,6 @@ def save_checkpoint(state, filename='checkpoint'):
     filename = '{}.pth'.format(filename)
     torch.save(state, filename)
 
-# TODO wyb
 def disable_augmentation_hook(hook_config, dataloader, total_epochs, cur_epoch, cfg, flag):
     """
     This hook turns off the data augmentation during training.

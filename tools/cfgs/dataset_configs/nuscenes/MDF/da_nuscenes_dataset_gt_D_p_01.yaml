@@ -1,5 +1,5 @@
 DATASET: 'NuScenesDataset'
-DATA_PATH: '../data' # TODO wyb
+DATA_PATH: '../data'
 # OSS_PATH: 's3://${PATH_TO_DATASET}/nuScenes'
 
 VERSION: 'v1.0-trainval'

@@ -27,7 +27,7 @@ def generate_labels(frame):
         obj_name.append(WAYMO_CLASSES[class_ind])
         difficulty.append(laser_labels[i].detection_difficulty_level)
         tracking_difficulty.append(laser_labels[i].tracking_difficulty_level)
-        dimensions.append([box.length, box.width, box.height])  # lwh in unified coordinate of 3DTrans
+        dimensions.append([box.length, box.width, box.height])
         locations.append(loc)
         obj_ids.append(laser_labels[i].id)
         num_points_in_gt.append(laser_labels[i].num_lidar_points_in_box)

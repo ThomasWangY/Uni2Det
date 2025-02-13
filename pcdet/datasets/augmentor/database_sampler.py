@@ -38,25 +38,6 @@ class DataBaseSampler(object):
                 with open(str(db_info_path), 'rb') as f:
                     infos = pickle.load(f)
                     [self.db_infos[cur_class].extend(infos[cur_class]) for cur_class in class_names]
-                    # TODO: map class name to the original names (if v1, comment out this snippet)
-                    # for cur_class in class_names:
-                    #     if 'waymo' in str(db_info_path):
-                    #         cls_map = {'car':'Vehicle', 'pedestrian':'Pedestrian', 'bicycle':'Cyclist'}
-                    #     elif 'kitti' in str(db_info_path):
-                    #         cls_map = {'car':'Car', 'pedestrian':'Pedestrian', 'bicycle':'Cyclist'}
-                    #     elif 'lyft' in str(db_info_path):
-                    #         cls_map = {'car':['car', 'other_vehicle', 'bus', 'truck', 'emergency_vehicle'], 'pedestrian':'pedestrian', 'bicycle':['motorcycle', 'bicycle']}
-                    #     else:
-                    #         cls_map = {'car':['car', 'construction_vehicle', 'bus', 'truck', 'trailer'], 'pedestrian':'pedestrian', 'bicycle':['motorcycle', 'bicycle']}
-
-                    #     ori_class = cls_map.get(cur_class, cur_class)
-                    #     if isinstance(ori_class, list):
-                    #         for c in ori_class:
-                    #             if c in infos:
-                    #                 self.db_infos[cur_class].extend(infos[c])
-                    #     else:
-                    #         if ori_class in infos:
-                    #             self.db_infos[cur_class].extend(infos[ori_class])
             else:
                 db_info_path = os.path.join(self.root_path, db_info_path)
                 self.logger.info(f"*************Load OSS db_info_path*************: {db_info_path}")

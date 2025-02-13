@@ -340,9 +340,6 @@ class WaymoDataset(DatasetTemplate):
                 gt_boxes_lidar = gt_boxes_lidar[mask]
                 annos['num_points_in_gt'] = annos['num_points_in_gt'][mask]
 
-            # TODO: map class names  (if v1, comment out this snippet)
-            # cls_map = {'Pedestrian':'pedestrian', 'Cyclist':'bicycle', 'Vehicle':'car'}
-            # annos['name'] = np.array([cls_map.get(name, name) for name in annos['name']])
             input_dict.update({
                 'gt_names': annos['name'],
                 'gt_boxes': gt_boxes_lidar,
@@ -373,9 +370,8 @@ class WaymoDataset(DatasetTemplate):
         data_dict = self.prepare_data(data_dict=input_dict)
         data_dict['metadata'] = info.get('metadata', info['frame_id'])
         data_dict.pop('num_points_in_gt', None)
-        # TODO: adjust feature dimension
         gt_boxes = data_dict['gt_boxes']
-        gt_boxes = np.concatenate((gt_boxes[...,:7], gt_boxes[...,-1:]), axis=-1) # TODO wyb
+        gt_boxes = np.concatenate((gt_boxes[...,:7], gt_boxes[...,-1:]), axis=-1)
         data_dict['gt_boxes'] = gt_boxes
         return data_dict
 
@@ -455,7 +451,6 @@ class WaymoDataset(DatasetTemplate):
         def waymo_eval(eval_det_annos, eval_gt_annos):
             from .waymo_eval import OpenPCDetWaymoDetectionMetricsEstimator
             eval = OpenPCDetWaymoDetectionMetricsEstimator()
-            # TODO: define class names
             class_names = ['Vehicle', 'Cyclist', 'Pedestrian']
             ap_dict = eval.waymo_evaluation(
                 eval_det_annos, eval_gt_annos, class_name=class_names,
@@ -469,10 +464,6 @@ class WaymoDataset(DatasetTemplate):
             return ap_result_str, ap_dict
 
         eval_det_annos = copy.deepcopy(det_annos)
-        # TODO: re-map class name to waymo  (if v1, comment out this snippet)
-        # cls_map = {'car':'Vehicle', 'bicycle':'Cyclist', 'pedestrian':'Pedestrian'}
-        # for name_list in eval_det_annos:
-        #     name_list['name'] = np.array([cls_map.get(name, name) for name in name_list['name']])
         eval_gt_annos = [copy.deepcopy(info['annos']) for info in self.infos]
 
         if kwargs['eval_metric'] == 'kitti':

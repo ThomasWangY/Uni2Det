@@ -30,7 +30,6 @@ class _UniNormR(nn.Module):
             self.register_parameter('running_var', None)
         self.reset_parameters()
 
-        # TODO wyb
         waymo_range = [-75.2, -75.2, 75.2, 75.2]
         kitti_range = [0, -40, 70.4, 40]
         nusc_range = [-51.2, -51.2, 51.2, 51.2]
@@ -43,7 +42,6 @@ class _UniNormR(nn.Module):
         self.nusc_2 = (nusc_range[2] - waymo_range[0])/(waymo_range[2] - waymo_range[0])
         self.nusc_3 = (nusc_range[1] - waymo_range[1])/(waymo_range[3] - waymo_range[1])
         self.nusc_4 = (nusc_range[3] - waymo_range[1])/(waymo_range[3] - waymo_range[1])
-        # TODO wyb
 
     def reset_parameters(self):
         if self.track_running_stats:

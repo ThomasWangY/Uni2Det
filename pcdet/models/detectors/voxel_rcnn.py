@@ -143,7 +143,7 @@ class VoxelRCNN_M_DB_MERGE(Detector3DTemplate_M_DB):
     def forward(self, batch_dict):
         
         for k, cur_module in enumerate(self.module_list):
-            batch_dict = cur_module(batch_dict) # TODO wyb
+            batch_dict = cur_module(batch_dict)
 
         if self.training:
             loss, tb_dict, disp_dict = self.get_training_loss()
@@ -279,7 +279,7 @@ class VoxelRCNN_M_DB_3_MERGE(Detector3DTemplate_M_DB_3):
     def forward(self, batch_dict):
         
         for k, cur_module in enumerate(self.module_list):
-            batch_dict = cur_module(batch_dict) # TODO wyb
+            batch_dict = cur_module(batch_dict)
 
         if self.training:
             loss, tb_dict, disp_dict = self.get_training_loss()
