@@ -4,7 +4,7 @@
 
 <sup>1</sup>Tongji University, <sup>2</sup>Baidu Inc.  *Equal Contribution
 
-Official implementation of the paper "[Uni2Det: Unified and Universal Framework for Prompt-Guided Multi-dataset 3D Detection](https://arxiv.org/abs/2409.20558)".
+Official implementation of the paper "[Uni<sup>2</sup>Det: Unified and Universal Framework for Prompt-Guided Multi-dataset 3D Detection](https://arxiv.org/abs/2409.20558)".
 
 
 <hr />
